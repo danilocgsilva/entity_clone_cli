@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Danilocgsilva\EntityCloneCli;
 
+use Danilocgsilva\ClassToSqlSchemaScript\FieldScriptSpitter;
+use Danilocgsilva\ClassToSqlSchemaScript\TableScriptSpitter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Danilocgsilva\ClassToSqlSchemaScript\DatabaseScriptSpitter;
 
 class MigrateCommand extends Command
 {
@@ -18,13 +21,33 @@ class MigrateCommand extends Command
         
         $this
             ->setName('migrate')
-            ->setDescription('Your command description.')
-            ->setHelp('Your command help.');
+            ->setDescription('Migrate database');
     }
     
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln("Migration!");
+        $fieldId = (new FieldScriptSpitter("id"))
+            ->setPrimaryKey()
+            ->setType("INT")
+            ->setNotNull()
+            ->setUnique()
+            ->setUnsigned();
+        $fieldDatabaseName = (new FieldScriptSpitter("name"))->setType("VARCHAR(255)")->setNotNull();
+        $fieldDatabaseDescription = (new FieldScriptSpitter("description"))->setType("VARCHAR(255)");
+
+        $tableScriptSpitter = new TableScriptSpitter("databases");
+        $tableScriptSpitter
+            ->addField($fieldId)
+            ->addField($fieldDatabaseName)
+            ->addField($fieldDatabaseDescription);
+
+        $databaseScriptSpitter = new DatabaseScriptSpitter(getenv("ENTITY_CLONE_DATABASE_NAME"));
+        $databaseScriptSpitter->addTableScriptSpitter($tableScriptSpitter);
+
+        $migrationScript = $databaseScriptSpitter->getScript();
+
+        $output->writeln($migrationScript);
+        
         return Command::SUCCESS;
     }
 }

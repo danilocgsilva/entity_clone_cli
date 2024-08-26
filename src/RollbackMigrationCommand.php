@@ -18,12 +18,12 @@ class RollbackMigrationCommand extends Command
 
         $this
             ->setName('migrate-rollback')
-            ->setDescription('Your command description.')
-            ->setHelp('Your command help.');
+            ->setDescription('Undo migration');
     }
     
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $scriptRollback = sprintf("DROP DATABASE %s;", getenv("ENTITY_CLONE_DATABASE_NAME"));
         $output->writeln("Rollback migration.");
         return Command::SUCCESS;
     }

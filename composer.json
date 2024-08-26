@@ -16,6 +16,7 @@
     ],
     "require": {
         "symfony/console": "^7.1",
-        "php-di/php-di": "^7.0"
+        "php-di/php-di": "^7.0",
+        "danilocgsilva/class_to_sql_schema_script": "^1.7"
     }
 }
