@@ -1,0 +1,21 @@
+{
+    "name": "danilocgsilva/entity_clone_cli",
+    "description": "Command line to allow entities database cloning/replicationg",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Danilocgsilva\\EntityCloneCli\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Danilo Silva",
+            "email": "contact@danilocgsilva.me"
+        }
+    ],
+    "require": {
+        "symfony/console": "^7.1",
+        "php-di/php-di": "^7.0"
+    }
+}
