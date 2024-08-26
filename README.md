@@ -1,0 +1,1 @@
+The application expects an environment variable called ENTITY_CLONE_DATABASE_NAME to be the database name.
