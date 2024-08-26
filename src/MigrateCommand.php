@@ -13,6 +13,8 @@ use Danilocgsilva\ClassToSqlSchemaScript\DatabaseScriptSpitter;
 
 class MigrateCommand extends Command
 {
+    use PdoTrait;
+    
     protected static $defaultName = 'migrate';
 
     protected function configure(): void
@@ -30,7 +32,7 @@ class MigrateCommand extends Command
             ->setPrimaryKey()
             ->setType("INT")
             ->setNotNull()
-            ->setUnique()
+            ->setAutoIncrement()
             ->setUnsigned();
         $fieldDatabaseName = (new FieldScriptSpitter("name"))->setType("VARCHAR(255)")->setNotNull();
         $fieldDatabaseDescription = (new FieldScriptSpitter("description"))->setType("VARCHAR(255)");
@@ -47,6 +49,10 @@ class MigrateCommand extends Command
         $migrationScript = $databaseScriptSpitter->getScript();
 
         $output->writeln($migrationScript);
+
+        $this->getPdo()->prepare($migrationScript)->execute();
+
+        $output->writeln("Migration done.");
         
         return Command::SUCCESS;
     }

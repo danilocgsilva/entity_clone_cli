@@ -10,6 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RollbackMigrationCommand extends Command
 {
+    use PdoTrait;
+    
     protected static $defaultName = 'migrate-rollback';
 
     protected function configure(): void
@@ -24,7 +26,11 @@ class RollbackMigrationCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $scriptRollback = sprintf("DROP DATABASE %s;", getenv("ENTITY_CLONE_DATABASE_NAME"));
-        $output->writeln("Rollback migration.");
+
+        $this->getPdo()->prepare($scriptRollback)->execute();
+        
+        $output->writeln("Rollback migration done.");
+
         return Command::SUCCESS;
     }
 }
