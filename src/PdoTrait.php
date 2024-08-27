@@ -11,7 +11,7 @@ trait PdoTrait
     public function getPdo(): PDO
     {
         return new PDO(
-            sprintf("mysql:host=%s;dbname=%s", getenv('ENTITY_CLONE_DATABASE_HOST'), getenv('ENTITY_CLONE_DATABASE_NAME')),
+            sprintf("mysql:host=%s", getenv('ENTITY_CLONE_DATABASE_HOST')),
             getenv('ENTITY_CLONE_DATABASE_USER'),
             getenv('ENTITY_CLONE_DATABASE_PASSWORD')
         );
