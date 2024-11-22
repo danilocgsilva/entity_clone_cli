@@ -1,5 +1,7 @@
 <?php
 
+use Danilocgsilva\EntityCloneCli\CloneEntity;
+
 require("vendor/autoload.php");
 
 use Symfony\Component\Console\Application;
@@ -17,5 +19,6 @@ $application = $container->get(Application::class);
 
 $application->add($container->get(MigrateCommand::class));
 $application->add($container->get(RollbackMigrationCommand::class));
+$application->add($container->get(CloneEntity::class));
 
 $application->run();
